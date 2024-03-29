@@ -1,9 +1,6 @@
 package api
 
 import (
-	"fmt"
-	"regexp"
-	"strings"
 	"unicode/utf8"
 
 	"github.com/google/uuid"
@@ -51,8 +48,10 @@ func validSubdomain(s string) bool {
 
 func validTXT(s string) bool {
 	sn := acmedns.SanitizeString(s)
-	if utf8.RuneCountInString(s) == 43 && utf8.RuneCountInString(sn) == 43 {
-		// 43 chars is the current LE auth key size, but not limited / defined by ACME
+	// 43 chars is the current LE auth key size, but not limited / defined by ACME
+	if (utf8.RuneCountInString(s) == 43 && utf8.RuneCountInString(sn) == 43) ||
+		// 满足阿里dns 验证，如：2024032700000066b1qvdorssios3y5i4l05lkvw3ybt5duweincn41e7jdxmo5r
+		(utf8.RuneCountInString(s) == 64 && utf8.RuneCountInString(sn) == 64) {
 		return true
 	}
 	return false
