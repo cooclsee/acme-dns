@@ -1,9 +1,10 @@
-FROM golang:alpine3.18 AS builder
+FROM golang:alpine AS builder
 LABEL maintainer="joona@kuori.org"
 
 RUN apk add --update git
 
 ENV GOPATH /tmp/buildcache
+ENV GOPROXY https://goproxy.io,direct
 COPY . /tmp/acme-dns
 WORKDIR /tmp/acme-dns
 RUN CGO_ENABLED=0 go build
